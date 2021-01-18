@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=100, initial-scale=1.0" />
+    <title>Create Account</title>
+
+    <style type="text/css">
+      *,
+      body,
+      html {
+        margin: 0px;
+      }
+      h1 {
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+          font-size: 60px;
+          color: rgb(4, 136, 212);
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .form-box {
+        width: 40%;
+        height: 50%;
+        background-color: rgb(18, 157, 238);
+        padding: 30px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      form > input {
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 0px;
+        outline-width: 0px;
+        width: 70%;
+      }
+    </style>
+  </head>
+  <body>
+      <h1>ChatRoom</h1>
+    <div class="form-box">
+      <form>
+        <input placeholder="username" required="true" name="username" />
+        <input placeholder="room" required="true" name="room" />
+        <input style="color: white; background-color: rgb(4, 136, 212); width: 40%;" type="submit" placeholder="join" />
+      </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>

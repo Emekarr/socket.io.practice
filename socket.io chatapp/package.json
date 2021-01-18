@@ -4,7 +4,7 @@
   "description": "A test chatroom app built with socket.io",
   "main": "server.js",
   "scripts": {
-    "devStart": "nodemon devStart"
+    "devStart": "nodemon run ./app/server.js"
   },
   "author": "Anyanwu-Ebere Chiemekam",
   "license": "ISC",
