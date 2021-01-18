@@ -14,10 +14,18 @@ const pathToPublicDirectory = path.join(__dirname, "../public");
 app.use(express.static(pathToPublicDirectory));
 
 io.on("connection", (socket) => {
-  console.log("new connection");
+  
+    socket.emit("welcome", "You are welcome!")
+    io.emit("newUser", "new user joined")
 
   socket.on("message", (message) => {
       io.emit("newMessage", message)
+  })
+
+  socket.on("location", ({latitude, longitude}, acknow) => {
+      
+    io.emit("alocation", `https://google.com/maps?q=${latitude},${longitude}`)
+    acknow()
   })
 });
 

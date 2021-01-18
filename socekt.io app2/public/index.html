@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=100, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
-    <h1>Welcome</h1>
+  <body style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h1>Chat App</h1>
     <form class="app-form">
-      <input class="data" required placeholder="type a message" />
-      <input type="submit" />
+      <input style="padding: 10px; margin: 8px 0; box-sizing: border-box; border: 0px; outline-width: 0px; background-color: rgb(180, 180, 180);" class="data" required placeholder="type a message" />
+      <input style="border: 0px; padding: 8px; outline-width: 0; color: white; background-color: rgb(73, 73, 221);" type="submit" />
     </form>
+    <button class="location-btn" style=" margin-top: 20px; padding: 8px; outline-width: 0; border: 0px; color: white; background-color: rgb(73, 73, 221);">send location</button>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script.js"></script>
