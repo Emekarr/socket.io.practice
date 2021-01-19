@@ -4,7 +4,7 @@ const express = require("express");
 const socketio = require("socket.io");
 
 //socket modules
-const {addUser, getUser} = require("./users");
+const {addUser, getUser, deleteUser} = require("./users");
 const e = require("express");
 
 //initialise the server
@@ -28,16 +28,22 @@ io.on("connection", (socket) => {
         socket.join(room)
 
         if (error) return loginFailed()
-        socket.broadcast.to(room).emit("new-user", username)
-        socket.emit("welcome", room)
+        socket.broadcast.to(newUser.room).emit("new-user", newUser.username)
+        socket.emit("welcome", newUser.room)
 
         socket.on("is-typing", () =>{
-            socket.broadcast.to(room).emit("user-is-typing", username)
+            socket.broadcast.to(newUser.room).emit("user-is-typing", newUser.username)
         })
 
         socket.on("stopped-typing", () =>{
-            socket.broadcast.to(room).emit("user-is-not-typing", username)
+            socket.broadcast.to(newUser.room).emit("user-is-not-typing", newUser.username)
         })
+    })
+
+    socket.on("disconnect", (socket)=> {
+        const disconnectedUser = deleteUser(socket.id)
+        
+        // socket.emit("user-disconnected", disconnectedUser.username)
     })
 
 });

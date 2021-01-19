@@ -16,7 +16,7 @@ const addUser = (id, username, room) => {
   const newUser = { id, username, room };
   users.push(newUser);
 
-  return newUser;
+  return {newUser};
 };
 
 const getUser = (id) => {
@@ -25,7 +25,18 @@ const getUser = (id) => {
   return user;
 };
 
+const deleteUser = (id)=> {
+    const disconnectedUserIndex = users.findIndex(user=>{
+        return user.id = id
+    })
+
+    const disconnectedUser = users.splice(disconnectedUserIndex, 1)
+
+    return disconnectedUser[0]
+}
+
 module.exports = {
     addUser,
-    getUser
+    getUser,
+    deleteUser
 }
