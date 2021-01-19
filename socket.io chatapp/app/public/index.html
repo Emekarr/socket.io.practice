@@ -12,9 +12,9 @@
         margin: 0px;
       }
       h1 {
-          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-          font-size: 60px;
-          color: rgb(4, 136, 212);
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        font-size: 60px;
+        color: rgb(4, 136, 212);
       }
       body {
         display: flex;
@@ -45,12 +45,16 @@
     </style>
   </head>
   <body>
-      <h1>ChatRoom</h1>
+    <h1>ChatRoom</h1>
     <div class="form-box">
-      <form>
-        <input placeholder="username" required="true" name="username" />
-        <input placeholder="room" required="true" name="room" />
-        <input style="color: white; background-color: rgb(4, 136, 212); width: 40%;" type="submit" placeholder="join" />
+      <form action="/room.html" class="login-form">
+        <input placeholder="username" autocomplete="off" required="true" name="username" />
+        <input placeholder="room" autocomplete="off" required="true" name="room" />
+        <input
+          style="color: white; background-color: rgb(4, 136, 212); width: 40%"
+          type="submit"
+          placeholder="join"
+        />
       </form>
     </div>
 
