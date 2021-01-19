@@ -30,8 +30,16 @@ io.on("connection", (socket) => {
         if (error) return loginFailed()
         socket.broadcast.to(room).emit("new-user", username)
         socket.emit("welcome", room)
+
+        socket.on("is-typing", () =>{
+            socket.broadcast.to(room).emit("user-is-typing", username)
+        })
+
+        socket.on("stopped-typing", () =>{
+            socket.broadcast.to(room).emit("user-is-not-typing", username)
+        })
     })
-  
+
 });
 
 
