@@ -86,3 +86,8 @@ socket.on("user-disconnected", (username)=>{
     style.marginTop = "20px";
     style.fontWeight = "100";
 })
+
+socket.on("disconnecting", () => {
+    window.location = "/index.html"
+    
+  });
