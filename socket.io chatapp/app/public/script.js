@@ -1,11 +1,10 @@
 const socket = io();
 const loginForm = document.querySelector(".login-form");
 
-const { username, room } = Qs.parse(location.search, {
-  ignoreQueryPrefix: true,
-});
-
-const 
+const scroll = () => {
+    const chatBox = document.querySelector(".chat-box");
+    chatBox.scrollTop = chatBox.scrollHeight
+}
 
 socket.emit("join", { username, room }, () => {
   alert("Username in Room must be unique!");
@@ -25,6 +24,8 @@ socket.on("new-user", (username) => {
   style.marginTop = "10px";
   style.fontWeight = "100";
   style.alignSelf = "center"
+
+  scroll()
 });
 
 socket.on("welcome", (room) => {
@@ -41,6 +42,8 @@ socket.on("welcome", (room) => {
   style.marginTop = "10px";
   style.fontWeight = "100";
   style.alignSelf = "center"
+
+  scroll()
 });
 
 const typeSpace = document.querySelector(".input-section > input");
@@ -90,10 +93,7 @@ socket.on("user-disconnected", (username) => {
   style.marginTop = "10px";
   style.fontWeight = "100";
   style.alignSelf = "center"
-});
-
-socket.on("disconnecting", () => {
-  window.location = "/index.html";
+  
 });
 
 const sendButton = document.querySelector("button");
@@ -102,6 +102,8 @@ sendButton.addEventListener("click", () => {
   const messageValue = message.value;
   if (!messageValue) return alert("message box cannot be empty");
   socket.emit("new-message", { message: messageValue });
+
+  message.value = ""
 
   const div = document.createElement("div");
 
@@ -135,6 +137,7 @@ sendButton.addEventListener("click", () => {
   const chatBox = document.querySelector(".chat-box");
 
   chatBox.appendChild(div);
+  scroll()
 });
 
 socket.on("new-message-recieved", ({ message, username }) => {
@@ -168,5 +171,6 @@ socket.on("new-message-recieved", ({ message, username }) => {
   const chatBox = document.querySelector(".chat-box");
 
   chatBox.appendChild(div);
+  scroll()
 });
 socket.on("new-message-sent", ({ message, username }) => {});
