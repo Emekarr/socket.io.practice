@@ -1,10 +1,14 @@
 const socket = io();
 const loginForm = document.querySelector(".login-form");
 
+const { username, room } = Qs.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });  
+
 const scroll = () => {
-    const chatBox = document.querySelector(".chat-box");
-    chatBox.scrollTop = chatBox.scrollHeight
-}
+  const chatBox = document.querySelector(".chat-box");
+  chatBox.scrollTop = chatBox.scrollHeight;
+};
 
 socket.emit("join", { username, room }, () => {
   alert("Username in Room must be unique!");
@@ -23,9 +27,9 @@ socket.on("new-user", (username) => {
   style.textAlign = "center";
   style.marginTop = "10px";
   style.fontWeight = "100";
-  style.alignSelf = "center"
+  style.alignSelf = "center";
 
-  scroll()
+  scroll();
 });
 
 socket.on("welcome", (room) => {
@@ -41,9 +45,9 @@ socket.on("welcome", (room) => {
   style.textAlign = "center";
   style.marginTop = "10px";
   style.fontWeight = "100";
-  style.alignSelf = "center"
+  style.alignSelf = "center";
 
-  scroll()
+  scroll();
 });
 
 const typeSpace = document.querySelector(".input-section > input");
@@ -62,10 +66,24 @@ typeSpace.addEventListener("keypress", () => {
   socket.emit("is-typing");
 });
 
+let userIsTyping;
 socket.on("user-is-typing", (username) => {
-  const isTyping = document.querySelector(".is-typing");
-  isTyping.style.display = "block";
-  isTyping.innerHTML = username + " is typing...";
+    const exists = document.querySelector(".exists")
+    if (exists) return
+
+  userIsTyping = document.createElement("H1");
+  const t = document.createTextNode(`${username} is typing...`);
+  userIsTyping.appendChild(t);
+  const chatBox = document.querySelector(".chat-box");
+
+  chatBox.appendChild(userIsTyping);
+  const style = userIsTyping.style;
+  userIsTyping.classList = "exists"
+  style.fontSize = "70%";
+  style.textAlign = "center";
+  style.marginTop = "10px";
+  style.fontWeight = "600";
+  style.alignSelf = "center";
 });
 
 typeSpace.addEventListener(
@@ -76,8 +94,7 @@ typeSpace.addEventListener(
 );
 
 socket.on("user-is-not-typing", (username) => {
-  const isTyping = document.querySelector(".is-typing");
-  isTyping.style.display = "none";
+  userIsTyping.remove()
 });
 
 socket.on("user-disconnected", (username) => {
@@ -92,8 +109,7 @@ socket.on("user-disconnected", (username) => {
   style.textAlign = "center";
   style.marginTop = "10px";
   style.fontWeight = "100";
-  style.alignSelf = "center"
-  
+  style.alignSelf = "center";
 });
 
 const sendButton = document.querySelector("button");
@@ -103,7 +119,6 @@ sendButton.addEventListener("click", () => {
   if (!messageValue) return alert("message box cannot be empty");
   socket.emit("new-message", { message: messageValue });
 
-  message.value = ""
 
   const div = document.createElement("div");
 
@@ -111,8 +126,8 @@ sendButton.addEventListener("click", () => {
   const t2 = document.createTextNode("me");
   h2.style.fontWeight = "600";
   h2.style.fontSize = "90%";
-  h2.style.marginTop = "-6px"
-  h2.style.color = "white"
+  h2.style.marginTop = "-6px";
+  h2.style.color = "white";
   h2.appendChild(t2);
 
   div.style.background = "rgb(18, 157, 238)";
@@ -120,24 +135,29 @@ sendButton.addEventListener("click", () => {
   div.style.borderRadius = "20px";
   div.style.display = "inline-block";
   div.style.padding = "10px";
-  div.style.paddingLeft = "15px"
-  div.style.paddingRight = "15px"
-  div.style.marginTop = "20px"
+  div.style.paddingLeft = "15px";
+  div.style.paddingRight = "15px";
+  div.style.marginTop = "20px";
+  div.style.marginRight = "20px"
+  div.style.alignSelf = "flex-end"
 
   const h = document.createElement("H1");
   const t = document.createTextNode(message.value);
   h.style.fontWeight = "100";
   h.style.fontSize = "90%";
-  h.style.color = "white"
+  h.style.color = "white";
 
   h.appendChild(t);
 
-  div.appendChild(h2)
+  div.appendChild(h2);
   div.appendChild(h);
   const chatBox = document.querySelector(".chat-box");
 
   chatBox.appendChild(div);
-  scroll()
+  
+  message.value = "";
+
+  scroll();
 });
 
 socket.on("new-message-recieved", ({ message, username }) => {
@@ -147,7 +167,7 @@ socket.on("new-message-recieved", ({ message, username }) => {
   const t2 = document.createTextNode("@" + username);
   h2.style.fontWeight = "600";
   h2.style.fontSize = "90%";
-  h2.style.marginTop = "-6px"
+  h2.style.marginTop = "-6px";
   h2.appendChild(t2);
 
   div.style.background = "rgb(202, 202, 202)";
@@ -155,9 +175,9 @@ socket.on("new-message-recieved", ({ message, username }) => {
   div.style.borderRadius = "20px";
   div.style.display = "inline-block";
   div.style.padding = "10px";
-  div.style.paddingLeft = "15px"
-  div.style.paddingRight = "15px"
-  div.style.marginTop = "10px"
+  div.style.paddingLeft = "15px";
+  div.style.paddingRight = "15px";
+  div.style.marginTop = "10px";
 
   const h = document.createElement("H1");
   const t = document.createTextNode(message);
@@ -166,11 +186,11 @@ socket.on("new-message-recieved", ({ message, username }) => {
 
   h.appendChild(t);
 
-  div.appendChild(h2)
+  div.appendChild(h2);
   div.appendChild(h);
   const chatBox = document.querySelector(".chat-box");
 
   chatBox.appendChild(div);
-  scroll()
+  scroll();
 });
 socket.on("new-message-sent", ({ message, username }) => {});
