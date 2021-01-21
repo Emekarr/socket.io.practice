@@ -50,6 +50,12 @@ io.on("connection", (socket) => {
       socket.broadcast.to(room).emit("user-disconnected", disconnectedUser.username)
     });
 
+    socket.on("new-message", ({message})=> {
+        socket.broadcast.to(room).emit("new-message-recieved", {message, username: newUser.username})
+        
+        socket.emit("new-message-sent", {message, username: newUser.username})
+    })
+
   });
 
 });
