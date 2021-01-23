@@ -201,7 +201,7 @@ socket.on("new-message-recieved", ({ message, username }) => {
     marginTop: "-6px",
   }).create();
 
-  const text2 = new Text(message.value, {
+  const text2 = new Text(message, {
     fontWeight: "100",
     fontSize: "90%",
   }).create();
