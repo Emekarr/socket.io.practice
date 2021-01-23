@@ -4,7 +4,7 @@ const express = require("express");
 const socketio = require("socket.io");
 
 //socket modules
-const { addUser, deleteUser } = require("./users");
+const { addUser } = require("./users");
 const e = require("express");
 
 //initialise the server
@@ -23,37 +23,37 @@ app.use(express.static(pathToPublicDirectory));
 io.on("connection", (socket) => {
 
   socket.on("join", ({ username, room }, loginFailed) => {
-    const { error, newUser } = addUser(socket.id, username, room);
+    const { error, user } = addUser(socket.id, username, room);
 
-    newUserData = newUser;
+    newUserData = user;
     socket.join(room);
 
     if (error) return loginFailed();
-    socket.broadcast.to(newUser.room).emit("new-user", newUser.username);
-    socket.emit("welcome", newUser.room);
+    socket.broadcast.to(user.room).emit("new-user", user.username);
+    socket.emit("welcome", user.room);
 
     socket.on("is-typing", () => {
       socket.broadcast
-        .to(newUser.room)
-        .emit("user-is-typing", newUser.username);
+        .to(user.room)
+        .emit("user-is-typing", user.username);
     });
 
     socket.on("stopped-typing", () => {
       socket.broadcast
-        .to(newUser.room)
-        .emit("user-is-not-typing", newUser.username);
+        .to(user.room)
+        .emit("user-is-not-typing", user.username);
     });
 
     socket.on("disconnecting", () => {
-      const disconnectedUser = deleteUser(socket.id);
+      const disconnectedUser = user.deleteUser()
       
       socket.broadcast.to(room).emit("user-disconnected", disconnectedUser.username)
     });
 
     socket.on("new-message", ({message})=> {
-        socket.broadcast.to(room).emit("new-message-recieved", {message, username: newUser.username})
+        socket.broadcast.to(room).emit("new-message-recieved", {message, username: user.username})
         
-        socket.emit("new-message-sent", {message, username: newUser.username})
+        socket.emit("new-message-sent", {message, username: user.username})
     })
 
   });
