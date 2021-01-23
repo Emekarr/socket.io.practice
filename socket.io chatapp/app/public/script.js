@@ -16,16 +16,15 @@ class Text {
     const style = h.style;
 
     for (let [key, value] of Object.entries(this.style)) {
+      if (key === "classList") {
+        h.classList.add(value);
+        
+      }
+
       if (style.hasOwnProperty(key)) {
-        if ((key === "classList")) {
-          console.log(key, value)
-          style[key].add(value);
-          return;
-        }
         style[key] = value;
       }
     }
-    console.log(style.classList)
     return h;
   };
 }
@@ -196,7 +195,6 @@ sendButton.addEventListener("click", () => {
 });
 
 socket.on("new-message-recieved", ({ message, username }) => {
-
   const text1 = new Text("@" + username, {
     fontWeight: "600",
     fontSize: "90%",
@@ -207,7 +205,7 @@ socket.on("new-message-recieved", ({ message, username }) => {
     fontWeight: "100",
     fontSize: "90%",
   }).create();
-  
+
   const div = new Div(
     {
       background: "rgb(202, 202, 202)",
